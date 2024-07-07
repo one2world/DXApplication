@@ -1,0 +1,105 @@
+﻿<dx:ThemedWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:Views="clr-namespace:DXApplication2.Views"
+    xmlns:ViewModels="clr-namespace:DXApplication2.ViewModels" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxgn="http://schemas.devexpress.com/winfx/2008/xaml/gantt"
+    x:Class="DXApplication2.MainWindow"
+    Title="MainWindow" Height="800" Width="1000">
+    <dx:ThemedWindow.DataContext>
+        <ViewModels:MainViewModel/>
+    </dx:ThemedWindow.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="985*"/>
+            <ColumnDefinition Width="16*"/>
+        </Grid.ColumnDefinitions>
+        <dxlc:LayoutControl Orientation="Vertical" Grid.ColumnSpan="2">
+            <dxlc:LayoutControl Orientation="Horizontal">
+                <dxg:GridControl AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" ItemsSource="{Binding Source}" 
+                             FilterString="StartsWith([Name], ?) And StartsWith([Name], ?) And StartsWith([City], ?)"
+                             >
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Name" Header="名字" />
+                        <dxg:GridColumn FieldName="City" Header="城市" />
+                        <dxg:GridColumn FieldName="Visits" Header="Visits" />
+                        <dxg:GridColumn FieldName="Birthday" Header="生日" />
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView AutoWidth="True"
+                        BestFitModeOnSourceChange="VisibleRows"
+                        ColumnFilterPopupMode="ExcelSmart" 
+                        ShowFixedTotalSummary="True" 
+                        TotalSummaryPosition="Top"
+                                   />
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+
+                <dxg:GridControl EnableSmartColumnsGeneration="True" 
+                 ItemsSource="{Binding Source}">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Name" Header="名字" />
+                        <dxg:GridColumn FieldName="City" Header="城市" />
+                        <dxg:GridColumn FieldName="Visits" Header="Visits" />
+                        <!--<dxg:GridColumn FieldName="Birthday" Header="生日" />-->
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TreeListView Name="treeListView" AutoWidth="True"
+                          KeyFieldName="ID" ParentFieldName="ParentID"
+                          TreeDerivationMode="Selfreference"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </dxlc:LayoutControl>
+            <dxlc:LayoutControl Orientation="Horizontal">
+                <dxgn:GanttControl ItemsSource="{Binding Source}">
+                    <dxgn:GanttControl.Columns>
+                        <dxgn:GanttColumn BindTo="Name" />
+                        <dxgn:GanttColumn BindTo="StartDate" />
+                        <dxgn:GanttColumn BindTo="FinishDate" />
+                    </dxgn:GanttControl.Columns>
+                    <dxgn:GanttControl.View>
+                        <dxgn:GanttView AutoExpandAllNodes="True" AllowEditing="False" AllowSorting="False"/>
+                    </dxgn:GanttControl.View>
+                </dxgn:GanttControl>
+                <dxg:TreeListControl AutoGenerateColumns="AddNew" 
+                        ItemsSource="{Binding Source, Mode=TwoWay}">
+                    <dxg:TreeListControl.Columns>
+                        <dxg:TreeListColumn FieldName="Name" Header="名字" />
+                        <dxg:TreeListColumn FieldName="City" Header="城市" />
+                        <dxg:TreeListColumn FieldName="Visits" Header="Visits" />
+                        <dxg:TreeListColumn FieldName="Birthday" Header="生日" />
+                    </dxg:TreeListControl.Columns>
+                    <dxg:TreeListControl.View>
+                        <dxg:TreeListView  AutoWidth="True"
+                                  KeyFieldName="Id" ParentFieldName="ParentId"
+                                  ShowTotalSummary="True"
+                                           ShowSelectionRectangle="True" AllowDragDrop="True"
+                                    AllowColumnFiltering="True" 
+                                    Drop="OnDrop"
+                                           DragRecordOver="OnDragRecordOver"
+                                           DropRecord="OnDropRecord"
+                                           />
+                    </dxg:TreeListControl.View>
+                </dxg:TreeListControl>
+            </dxlc:LayoutControl>
+            <dxlc:LayoutControl Orientation="Horizontal" Height="180">
+                <dx:SimpleButton Background="#FFE9EBEC" BorderThickness="2" BorderBrush="#FF0D3A50"
+                     CornerRadius="5" Height="30" FontSize="10" 
+                     Foreground="#ff505050" Glyph="{dx:DXImage SvgImages/Arrows/MoveUp.svg}" 
+                     GlyphHeight="20" GlyphWidth="20" Content="Add" 
+                                 VerticalAlignment="Center"
+                                 Command="{Binding AsyncAddCommand}"/>
+                <dx:SimpleButton Background="#FFE9EBEC" BorderThickness="2" BorderBrush="#FF0D3A50"
+                     CornerRadius="5" Height="30" FontSize="10" 
+                     Foreground="#ff505050" Glyph="{dx:DXImage SvgImages/Arrows/MoveUp.svg}" 
+                     GlyphHeight="20" GlyphWidth="20" Content="Remove" 
+                                 VerticalAlignment="Center"
+                                 Command="{Binding AsyncRemoveCommand}"/>
+            </dxlc:LayoutControl>
+        </dxlc:LayoutControl>
+    </Grid>
+</dx:ThemedWindow>
